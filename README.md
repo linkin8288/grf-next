@@ -22,4 +22,6 @@ npx create-next-app@latest ./
 8. Separate production and localhost api call.
 9. While creating getUser function, create graphql folder to write queries.
 10. Once create getUser function, use it in the sesstion.ts file. Call the functions you created in the session file.
-11. Inside grafbase.config.ts file, create jwt NEXTAUTH_SECRET
+11. Inside grafbase.config.ts file, create jwt NEXTAUTH_SECRET.
+12. Create create-project page, Modal, ProjectForm. Clicking outside to close the modal in create-project page.
+13. Create ProjectForm
