@@ -1,7 +1,15 @@
+// Procedures: 1. Github auth. 2. Log in and create users. 3. JWT
+
+// In order to enhance readability of the code, calling the function when user 
+// sign in, create actions.ts file to specify the function (getUser and createUser).
+
+// Create jwt inside grafbase.config.ts file and the code inside this file.
+// These functions allow for encoding and decoding JWT tokens using the jsonwebtoken library.
+
 import { getServerSession } from "next-auth/next";
 import { NextAuthOptions, User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
-import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github"
 import jsonwebtoken from 'jsonwebtoken'
 import { JWT } from "next-auth/jwt";
 
@@ -9,14 +17,19 @@ import { createUser, getUser } from "./actions";
 import { SessionInterface, UserProfile } from "@/common.types";
 
 export const authOptions: NextAuthOptions = {
+  // Github login
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    GithubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
     }),
   ],
+
+  // JWT
+  // These functions allow for encoding and decoding JWT tokens using the jsonwebtoken library.
   jwt: {
     encode: ({ secret, token }) => {
+      // generate the encoded token.
       const encodedToken = jsonwebtoken.sign(
         {
           ...token,
@@ -33,14 +46,17 @@ export const authOptions: NextAuthOptions = {
       return decodedToken as JWT;
     },
   },
+  // Log in and Create users
   theme: {
     colorScheme: "light",
     logo: "/logo.svg",
   },
   callbacks: {
+    // This function will triger every time user visit the page.
     async session({ session }) {
       const email = session?.user?.email as string;
-
+      // Combine the github user and projects, newSession is the new obj of 
+      // combining these 2.
       try { 
         const data = await getUser(email) as { user?: UserProfile }
 
@@ -58,10 +74,15 @@ export const authOptions: NextAuthOptions = {
         return session;
       }
     },
+    // This function will triger every time user sign in.
     async signIn({ user }: {
       user: AdapterUser | User
     }) {
       try {
+        // get the user if they exist
+        // if they don't exist, create them
+        // return true if they exist or were created
+        // getUser function comes from actions file.
         const userExists = await getUser(user?.email as string) as { user?: UserProfile }
         
         if (!userExists.user) {
@@ -77,6 +98,13 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
+// By calling getCurrentUser, you can obtain the current user's 
+// session object, which can contain information such as the user's 
+// ID, role, authentication status, or other relevant data. This session 
+// object can then be used to determine the current user's identity and 
+// perform authorization checks or retrieve user-specific data.
+
+// Call the session in Navbar component
 export async function getCurrentUser() {
   const session = await getServerSession(authOptions) as SessionInterface;
 

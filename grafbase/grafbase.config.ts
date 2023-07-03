@@ -1,3 +1,11 @@
+// Create nextauth secret inside jwt.
+// The jwt constant is created using the auth.JWT function from the next-auth library. 
+// It is used as a provider for authentication.
+
+// Inside the URL,
+// https://next-auth.js.org/configuration/options#description-1    get $ openssl rand -base64 32
+// Create an .env file inside this folder and put the SECRET inside as well as inside .env file in the main folder.
+
 import { g, config, auth } from '@grafbase/sdk';
 
 // @ts-ignore

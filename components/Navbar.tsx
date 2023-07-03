@@ -1,3 +1,16 @@
+// Call getCurrentUser() function from lib file to get session (user data).
+// Navbar is a server side component so you can do async call.
+
+// Server-side rendering (SSR) allows you to pre-render your 
+// pages with data fetched from external 
+// sources or APIs, providing better performance and SEO optimization.
+
+// This pre-rendering process allows the server to generate the HTML 
+// content of the pages and include the necessary data before sending them to the clients.
+
+// With Client-Side Rendering (CSR), the client's device or browser needs to download 
+// the JavaScript bundle and execute it to render the page.
+
 import Image from "next/image";
 import Link from "next/link";
 

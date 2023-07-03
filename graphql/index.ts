@@ -1,3 +1,6 @@
+// Defines a GraphQL query, which define the structure and shape of the data you want to retrieve from the server. 
+// The query is wrapped inside backticks (`) to denote a multi-line string in JavaScript.
+// A mutation is a type of GraphQL operation used to create, update, or delete data on the server.
 export const createProjectMutation = `
 	mutation CreateProject($input: ProjectCreateInput!) {
 		projectCreate(input: $input) {
